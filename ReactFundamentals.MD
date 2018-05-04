@@ -1,5 +1,8 @@
 # React Fundamentals
 
+A guide to start a react project inspired by [Tyler McGinnis' Course](https://tylermcginnis.com/courses/react-fundamentals/)
+
+Create empty direcory and `npm init` hitting enter until prompt ends.
 ```
 npm install react react-dom -S
 ```
@@ -58,7 +61,7 @@ Change or create start script in `package.json`
 
 ## First Components
 
-We will start by explosing React global in index.js (might need to `npm install react react-dom -s`)
+We will start by explosing React global in index.js
 
 ```js
 import React from 'react';
