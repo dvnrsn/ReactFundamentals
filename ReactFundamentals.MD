@@ -1,11 +1,101 @@
 # React Fundamentals
 
-A guide to start a react project inspired by [Tyler McGinnis' Course](https://tylermcginnis.com/courses/react-fundamentals/)
+Create empty direcory and `yarn init` hitting enter until prompt ends then add react
+```
+yarn add react react-dom
+```
 
-Create empty direcory and `npm init` hitting enter until prompt ends.
+## Create `src/index.js`
+
+In index.js import React and ReactDOM from react and react-dom respectively. (Expose react global and react dom global)
+
+Create a component <App> and `reactDOM.render` it to `document.getElementById('app')`
+
+```js
+import React from 'react'
+import ReactDOM from 'react-dom'
+
+const App = () => <div>hello</div>
+
+ReactDOM.render(<App />, document.getElementById('app'))
 ```
-npm install react react-dom -S
+
+## Configure babel
+
+Install [babel-loader](https://github.com/babel/babel-loader) and @babel/core for transpiling JS files
+
+Install [@babel/preset-react](https://babeljs.io/docs/en/babel-preset-react)
+for the purpose of transforming JSX to react
+```js
+<div> // React.createElement('div')
 ```
+Also install [@babel/preset-env](https://babeljs.io/docs/en/babel-preset-env) which will let us use the latest JS
+
+```
+yarn add --dev babel-loader @babel/core @babel/preset-react @babel/preset-env
+```
+
+Create the `.babelrc` and add
+
+```js
+{
+  "presets": [
+    "@babel/preset-react",
+    "@babel/preset-env",
+  ]
+}
+```
+## Configure webpack
+
+Add webpack for bundling our assets
+```
+yarn add --dev webpack webpack-dev-server webpack-cli
+```
+
+
+Create a file called `webpack.config.js` and populate it after [docs](#sample-webpack-config)
+
+## HTML file
+
+Add `src/index.html` with a div with id="app" something like:
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+      <meta charset="utf-8">
+  </head>
+  <body>
+    <div id="app"></div>
+  </body>
+</html>
+```
+
+```
+yarn add html-webpack-plugin --dev
+```
+and add it to module.exports in webpack config:
+```js
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+...
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: './src/index.html'
+    })
+  ]
+```
+
+```
+yarn webpack-dev-server --open
+```
+
+## What about styling?
+
+```
+yarn add --dev css-loader style-loader
+```
+
+These will handle importing css files into react component files. However, check out [css-modules](https://github.com/css-modules/css-modules) for locally scoping CSS.
 
 ## Make a .gitignore
 
@@ -13,87 +103,35 @@ node_modules, dist
 
 [React .gitignore](https://github.com/facebook/react/blob/master/.gitignore)
 
-## Create app/index.js and app/index.css
+## Sample webpack config
+(February 2020)
 
-In index.js import React and ReactDOM from react and react-dom respectively. (Expose react global and react dom global)
+```js
+const HtmlWebpackPlugin = require('html-webpack-plugin')
 
-create a component <App> and `reactDOM.render` it to `document.getElementById('app')`
-
-## Configure Webpack and Babel
-
-```
-npm install --save-dev babel-core babel-loader babel-preset-env babel-preset-react css-loader style-loader html-webpack-plugin webpack webpack-dev-server webpack-cli
-````
-
-Webpack is going to take your code at entry prop, use loaders to transform, and dum in file specified in output
-
-Create a file called `webpack.config.js` and populate it after [docs](https://webpack.js.org/concepts/) or after [Mcginnis](https://github.com/tylermcginnis/react-fundamentals/blob/first-component/webpack.config.js)
-
-Add `mode: "development"` to exports
-
-Add a babel property to webpack.config.json
-
-```  
-"babel": {
-    "presets": ["env", "react"]
+module.exports = {
+  module: {
+    rules: [
+      {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        use: {
+          loader: 'babel-loader'
+        }
+      },
+      {
+        test: /\.css$/i,
+        use: ['style-loader', 'css-loader'],
+      },
+    ]
   },
-```
-
-Add `app/index.html` with a div with id="app" like [this](https://github.com/tylermcginnis/react-fundamentals/blob/first-component/app/index.html)
-
-In `package.json` add to scripts object:
-
-`"create": "webpack"`
-
-In terminal 
-
-```
-npm run create
-```
-
-```
-npm install --save-dev webpack-dev-server
-```
-
-Change or create start script in `package.json`
-
-`"start": "webpack-dev-server --open"`
-
-## First Components
-
-We will start by explosing React global in index.js
-
-```js
-import React from 'react';
-import ReactDOM from 'react-dom';
-```
-
-Now we can create and display component:
-
-```js
-class App extends React.Component {
-  render() {
-    return (
-      <div>
-        <Popular />
-      </div>
-    );
-  }
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: './src/index.html'
+    }),
+  ]
 }
-
-ReactDOM.render(<App />, document.getElementById('app'))
 ```
-
-`npm run start`
-
-Let's move App to a 'components' directory (still inside app). We'll need to import the app into index.js:
-
-```js
-import App from './components/App'
-```
-
-Build out components from there...
-
 
 
 
